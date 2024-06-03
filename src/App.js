@@ -9,12 +9,14 @@ function App() {
   const onChange = (event) => {
     const value = event.target.value;
     setAmountUSD(value);
-    setHowMuchBTC(value / 68412);
+    setHowMuchBTC(value / btcPrice);
   };
   useEffect(() => {
     fetch("https://api.coinpaprika.com/v1/tickers").then((response) =>
       response.json().then((json) => {
         setCoins(json);
+        const btc = json.find((coin) => coin.symbol === "BTC");
+        setBtcPrice(btc.quotes.USD.price);
         setTimeout(() => {
           setLoading(false);
         }, 500);
